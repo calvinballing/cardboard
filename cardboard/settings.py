@@ -192,7 +192,7 @@ DATABASES["default"]["TEST"] = {"NAME": "test_cardboard"}
 # App title
 APP_TITLE = os.environ.get("APP_TITLE", "Cardinality Cardboard")
 APP_SHORT_TITLE = os.environ.get("APP_SHORT_TITLE", "Cardboard")
-FAVICON = "favicon.ico"
+FAVICON = "favicon.svg"
 if DEBUG:
     APP_TITLE = f"[Dev] {APP_TITLE}"
     APP_SHORT_TITLE = f"[Dev] {APP_SHORT_TITLE}"
