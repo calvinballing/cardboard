@@ -175,12 +175,12 @@ def extract_id_from_sheets_url(url) -> str:
 def add_puzzle_link_to_sheet(self, puzzle_url, sheet_url, puzzle_name) -> None:
     req_body = {
         "values": [
-            [f'=HYPERLINK("{puzzle_url}", "{puzzle_name}")'],
+            [f'=HYPERLINK("{puzzle_url}", "{puzzle_name}")']
         ]
     }
     self.sheets_service().spreadsheets().values().update(
         spreadsheetId=extract_id_from_sheets_url(sheet_url),
-        range="A1:B2",
+        range="B1:B1",
         valueInputOption="USER_ENTERED",
         body=req_body,
     ).execute()
