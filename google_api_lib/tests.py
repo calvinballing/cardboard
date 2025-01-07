@@ -21,7 +21,7 @@ def mock_transfer_ownership(file, new_owner):
     return
 
 
-def mock_add_puzzle_link_to_sheet(puzzle_url, sheet_url):
+def mock_add_puzzle_link_to_sheet(puzzle_url, sheet_url, puzzle_name):
     return
 
 

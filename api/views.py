@@ -329,7 +329,7 @@ class PuzzleViewSet(viewsets.ModelViewSet):
                 if url_changed and google_api_lib.enabled():
                     transaction.on_commit(
                         lambda: google_api_lib.tasks.add_puzzle_link_to_sheet.delay(
-                            new_url, puzzle.sheet
+                            new_url, puzzle.sheet, data["name"]
                         )
                     )
                 if puzzle.is_meta and google_api_lib.enabled():

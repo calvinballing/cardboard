@@ -140,7 +140,7 @@ def create_google_sheets(self, puzzle_id) -> None:
                 rename_sheet.delay(sheet_url, puzzle.name)
 
             transfer_ownership.delay(new_file, template_file_id)
-            add_puzzle_link_to_sheet.delay(puzzle.url, sheet_url)
+            add_puzzle_link_to_sheet.delay(puzzle.url, sheet_url, puzzle.name)
 
             if destination_folder_id:
                 move_drive_file.delay(
@@ -172,10 +172,10 @@ def extract_id_from_sheets_url(url) -> str:
 
 
 @shared_task(base=GoogleApiClientTask, bind=True)
-def add_puzzle_link_to_sheet(self, puzzle_url, sheet_url) -> None:
+def add_puzzle_link_to_sheet(self, puzzle_url, sheet_url, puzzle_name) -> None:
     req_body = {
         "values": [
-            [f'=HYPERLINK("{puzzle_url}", "Puzzle Link")'],
+            [f'=HYPERLINK("{puzzle_url}", "{puzzle_name}")'],
         ]
     }
     self.sheets_service().spreadsheets().values().update(
