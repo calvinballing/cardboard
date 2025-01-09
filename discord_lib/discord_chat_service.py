@@ -12,7 +12,6 @@ CHANNEL_CATEGORY_TYPE = 4
 CHANNEL_TEXT_TYPE = 0
 CHANNEL_VOICE_TYPE = 2
 
-
 class DiscordChatService(ChatService):
     """Discord service proxy.
 
@@ -44,7 +43,7 @@ class DiscordChatService(ChatService):
         # 12852794 is Cardinal
         return [{"fields": fields, "color": 12852794, "type": "rich"}]
 
-    def send_message(self, channel_id, msg, embedded_urls={}):
+    def send_message(self, channel_id, msg, embedded_urls={}, pin=False):
         """
         Sends msg to specified channel_id.
         embedded_urls is a map mapping display_text to url.
@@ -52,12 +51,25 @@ class DiscordChatService(ChatService):
         """
         try:
             embeds = self._make_link_embeds(embedded_urls)
-            requests.post(
+            response = requests.post(
                 f"{DISCORD_BASE_API_URL}/channels/{channel_id}/messages",
                 headers=self._headers,
                 json={"content": msg, "embeds": embeds},
                 timeout=5,
             )
+
+            response.raise_for_status() 
+
+            message_id = response.json()["id"]
+
+            if (pin):
+                pin_response = requests.put(
+                    f"{DISCORD_BASE_API_URL}/channels/{channel_id}/pins/{message_id}",
+                    headers=self._headers,
+                    timeout=5,
+                )
+                pin_response.raise_for_status() 
+
         except Exception as e:
             print(f"Error sending discord message: {e}")
 
